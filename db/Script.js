@@ -27,3 +27,11 @@ module.exports.findInListId= function(id1, id2, id3, callback){
 		}
 	});
 }
+
+module.exports.getLength = function(callback) {
+	script.countDocuments({}, callback)
+}
+
+module.exports.getRandom = function(skip, limit, callback) {
+	script.find().skip(skip).limit(limit).exec(callback);
+}

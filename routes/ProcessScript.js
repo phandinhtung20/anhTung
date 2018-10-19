@@ -62,4 +62,32 @@ router.post("/", upload.single('file', 3), function(req,res){
 	}
 })
 
+router.get("/", (req,res) => {
+	async.waterfall([
+		function(cb) {
+			scriptDB.getLength((err, count) => {
+				if (err) {
+					cb(err);
+				} else {
+					cb(null, count);
+				}
+			});
+		},
+		function(count, cb) {
+			var skip = Math.floor(Math.random() * count - 3);
+			scriptDB.getRandom(skip, 3, function(err, docs) {
+				if (err) {
+					cb(err);
+				} else {
+					res.send({
+						status: 200,
+						message:docs});
+				}
+			})
+		}
+		], function(err) {
+			res.send({ status: 400, message: err});
+		})
+})
+
 module.exports = router;

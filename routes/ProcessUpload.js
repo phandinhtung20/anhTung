@@ -6,7 +6,7 @@ var express		= require('express'),
 	scriptDB	= require('../db/Script'),
 	multer  	= require('multer'),
 	async 		= require('async'),
-	diskStorage = require('../configAndConstant/Config.js'),
+	diskStorage = require('../configAndConstant/Config'),
 	upload 		= multer({dest: 'uploads/', storage: diskStorage.storage});
 
 router.post("/", upload.fields(
@@ -22,6 +22,7 @@ router.post("/", upload.fields(
 			maxCount: 1
 		}
 	]), function(req,res){
+		console.log(req.body.idUser)
 		console.log(req.files);
 		if (!mongoose.Types.ObjectId.isValid(req.body.idUser) ||
 			!mongoose.Types.ObjectId.isValid(req.body.idScript1) ||
