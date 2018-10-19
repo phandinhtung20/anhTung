@@ -1,0 +1,22 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Do an chuyen nganh nhung",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index"
+  },
+  "author": "tung phan",
+  "license": "ISC",
+  "dependencies": {
+    "archiver": "^3.0.0",
+    "async": "^2.6.1",
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "exceljs": "^1.6.2",
+    "express": "^4.16.3",
+    "log4js": "^3.0.5",
+    "mongoose": "^5.2.17",
+    "multer": "^1.3.1"
+  }
+}
