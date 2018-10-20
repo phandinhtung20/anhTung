@@ -12,7 +12,7 @@ app.set('view engine','ejs');
 app.set('views', './views')
 
 // Start server
-http.createServer(app).listen(80,'192.168.1.9', function () {
+http.createServer(app).listen(80, function () {
 	console.log("Start server HTTP ");
 });
 

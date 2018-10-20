@@ -2,17 +2,64 @@
 <html>
 	<head>
 		<title>Upload</title>
+		<style>
+			select, input {
+				width: 230px;
+			}
+
+			span {
+				display: inline-block;
+  				width: 100px;
+			}
+		</style>
 	</head>
 	<body>
 		<H3>Upfile</H3>
 		<form action="/upload" method="post" enctype="multipart/form-data">
-			<input type="text" name="idUser" value="5bb8e0d04df33705e4edf5c5"> </br>
-			<input type="text" name="idScript1" value="5bb8e0d04df33705e4edf5c5"> </br>
-			<input type="file" name="file1"></br>
-			<input type="text" name="idScript2" value="5bb8e0d04df33705e4edf5c5"> </br>
-			<input type="file" name="file2"></br>
-			<input type="text" name="idScript3" value="5bb8e0d04df33705e4edf5c5"> </br>
-			<input type="file" name="file3"></br>
+			<span>Email</span>
+			<input type="email" name="email" value="xxx@xxx.com"> <br/>
+			<span>Giới tính: </span>
+			<select name="sexId">
+				<option value="0" selected>Nam</option>
+				<option value="1">Nữ</option>
+				<option value="2">Khác</option>
+			</select> <br>
+			<span>Tuổi: </span>
+			<select name="ageId">
+				<option value="0">&lt;19</option>
+				<option value="1" selected>19-29</option>
+				<option value="2">30-39</option>
+				<option value="3">40-49</option>
+				<option value="4">50-59</option>
+				<option value="5">60-69</option>
+				<option value="6">70-79</option>
+				<option value="7">80-89</option>
+				<option value="8">&gt;90</option>
+			</select> <br>
+			<span>Vùng miền: </span>
+			<select name="regionId">
+				<option value="5bc466e3dc0111146fb5f067">Bắc(r,s,tr đọc nhẹ)</option>
+				<option value="5bc46ec7dc0111146fb6143d">Bắc(r,s,tr đọc nặng)</option>
+				<option value="5bc46f81dc0111146fb617b3">Bắc (lẫn l và n)</option>
+				<option value="5bc46f81dc0111146fb617b6">Thanh Hoá</option>
+				<option value="5bc46f82dc0111146fb617b8">Nghệ An</option>
+				<option value="5bc46f82dc0111146fb617bb">Hà Tĩnh</option>
+				<option value="5bc46f82dc0111146fb617bd">Quảng Bình</option>
+				<option value="5bc46f83dc0111146fb617bf">Quảng Trị</option>
+				<option value="5bc46f83dc0111146fb617c2">Thừa Thiên Huế</option>
+				<option value="5bc46f83dc0111146fb617c4">Đà Nẵng, Quảng Nam, Quảng Ngãi</option>
+				<option value="5bc46f84dc0111146fb617c6">Tây Nguyên</option>
+				<option value="5bc46f84dc0111146fb617cb">Bình Định</option>
+				<option value="5bc46f84dc0111146fb617cf">Phú Yên - Bình Thuận</option>
+				<option value="5bc46f84dc0111146fb617d2">Đông Nam Bộ</option>
+				<option value="5bc46f85dc0111146fb617d5">Tây Nam Bộ</option>
+			</select> <br>
+			<input type="text" name="idScript1" value="5bb8e0d04df33705e4edf5eb"> <br/>
+			<input type="text" name="idScript2" value="5bb8e0d04df33705e4edf5ea"> <br/>
+			<input type="text" name="idScript3" value="5bb8e0d04df33705e4edf5ec"> <br/>
+			<input type="file" name="file1"><br/>
+			<input type="file" name="file2"><br/>
+			<input type="file" name="file3"><br/>
 	  		<input type="submit" name="upload" value="Submit">
 		</form>
 	</body>

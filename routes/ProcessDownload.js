@@ -1,6 +1,7 @@
 var express		= require('express'),
     router 		= express.Router(),
 	fileDB		= require('../db/FileInfo'),
+	constant 	= require('../configAndConstant/Constant'),
 	fs 			= require('fs'),
 	archiver 	= require('archiver'),
 	exceljs 	= require('exceljs'),
@@ -9,21 +10,26 @@ var express		= require('express'),
 // Route download file
 router.get('/', function(req, res) {
 	async.waterfall([
-			function(callback) {
+			function(cb) {
 				getAllFileInfo(function(err, docs) {
 					if (err) {
 						console.log('Find file info error: getAllFileInfo')
-						callback(err);
+						cb(err.message);
 					} else {
-						callback(null, docs);
+						cb(null, docs);
 					}
 				})
 			},
-			function(files, callback) {
-				generateFileInfoCSV(files);
-				callback(null);
+			function(files, cb) {
+				generateFileInfoCSV(files, function(err) {
+					if (err) {
+						cb(err.message);
+					} else {
+						cb(null, files);
+					}
+				});
 			},
-			function(callback) {
+			function(files, cb) {
 				var output = fs.createWriteStream(process.cwd() + '\\VNSoundSample.zip');
 				var zip = archiver('zip');
 				output.on('close', function() {
@@ -33,11 +39,17 @@ router.get('/', function(req, res) {
 				});
 				zip.on('error', function(err) {
 					console.log("Error: "+err)
-					callback("ZIP_FALSE")
+					cb("ZIP_FALSE")
 				    throw err;
 				});
 				zip.pipe(output);
-				zip.directory('uploads', false, { date: new Date() });
+
+				for (var i = 0; i < files.length; i++) {
+					var file = files[i].fileInfo;
+					zip.append(fs.createReadStream(process.cwd() + "\\uploads\\"+file), { name: file });
+				}
+				zip.append(fs.createReadStream(process.cwd() + "\\uploads\\AudioInfo.xlsx"), {name: "AudioInfo.xlsx"});
+
 				zip.finalize();
 			}
 		], 
@@ -47,15 +59,31 @@ router.get('/', function(req, res) {
 	);
 });
 
-var getAllFileInfo = callback => {fileDB.find({}, callback)};
-var generateFileInfoCSV = function(files) {
-	console.log('files: '+files.length);
-	// var workbook = createAndFillWorkbook();
-	// workbook.csv.writeFile(filename)
- //    .then(function() {
- //        // done
- //    });
-}
+var getAllFileInfo = (callback) => {
+	fileDB.getAllInfo(callback)
+};
+var generateFileInfoCSV = (files, callback) => {
+	var workbook = new exceljs.Workbook();
+	var sheet = workbook.addWorksheet('info');
+	sheet.columns = [
+	    { header: 'fileName', key: 'name', width: 30 },
+	    { header: 'script', key: 'script', width: 50 },
+	    { header: 'sex', key: 'sex', width: 10 },
+	    { header: 'age', key: 'age', width: 10 },
+	    { header: 'region', key: 'region', width: 20 }
+	];
 
+	for (var i = 0; i < files.length; i++) {
+		sheet.addRow({
+			name: files[i].fileInfo,
+			script: files[i].script, 
+			sex: constant.sex[files[i].sexId],
+			age: constant.age[files[i].ageId],
+			region: files[i].region
+		});
+	}
+
+	workbook.xlsx.writeFile(process.cwd()+"\\uploads\\AudioInfo.xlsx").then(callback);
+}
 
 module.exports = router;

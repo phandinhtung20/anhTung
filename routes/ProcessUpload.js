@@ -1,12 +1,14 @@
 var express		= require('express'),
     router 		= express.Router(),
-    mongoose	= require('mongoose'),
+    objectId	= require('mongoose').Types.ObjectId,
 	fileDB		= require('../db/FileInfo'),
 	userDB		= require('../db/UserInfo'),
 	scriptDB	= require('../db/Script'),
+	regionDB	= require('../db/Regions'),
 	multer  	= require('multer'),
 	async 		= require('async'),
 	diskStorage = require('../configAndConstant/Config'),
+	constant 	= require('../configAndConstant/Constant'),
 	upload 		= multer({dest: 'uploads/', storage: diskStorage.storage});
 
 router.post("/", upload.fields(
@@ -22,25 +24,33 @@ router.post("/", upload.fields(
 			maxCount: 1
 		}
 	]), function(req,res){
-		console.log(req.body.idUser)
 		console.log(req.files);
-		if (!mongoose.Types.ObjectId.isValid(req.body.idUser) ||
-			!mongoose.Types.ObjectId.isValid(req.body.idScript1) ||
-			!mongoose.Types.ObjectId.isValid(req.body.idScript2) ||
-			!mongoose.Types.ObjectId.isValid(req.body.idScript3) ||
+		var sexId = req.body.sexId,
+			ageID = req.body.ageId,
+			regionId = req.body.regionId;
+		if ( constant.sex[sexId] == undefined ||
+			 constant.age[ageID] == undefined ||
+			!objectId.isValid(req.body.regionId) ||
+			!objectId.isValid(req.body.idScript1) ||
+			!objectId.isValid(req.body.idScript2) ||
+			!objectId.isValid(req.body.idScript3) ||
 			req.files.file1 == undefined ||
 			req.files.file2 == undefined ||
-			req.files.file3 == undefined) {
+			req.files.file3 == undefined
+			) {
 			res.send("<h1>Upload file khong thanh cong</h1>")
 		} else {
 			async.waterfall([
-				function(cb) { // Check userid
-					userDB.findUser("5bb8e0d04df33705e4edf5c5", function(info) {
-						console.log(info);
-						if(info == null) {
-							cb(null);
+				function(cb) { // Check regionId
+					regionDB.findRegion(regionId, function(err, region) {
+						if(err) {
+							cb(err);
 						} else {
-							cb(info.message);
+							if(region = null) {
+								cb("Region is wrong");
+							} else {
+								cb(null);
+							}
 						}
 					})
 				},
@@ -50,35 +60,102 @@ router.post("/", upload.fields(
 						req.body.idScript2,
 						req.body.idScript3,
 						function(err) {
-							
+							if (err) {
+								cb(err);
+							} else {
+								cb(null)
+							}
 						});
+				},
+				function(cb) { // Check email
+					var email = req.body.email;
+					if (email) {
+						userDB.findUserByEmail(email, function(err, user) {
+							if (err) {
+								cb(err.message);
+							} else {
+								checkUser(user, email, sexId, ageID, regionId, cb);
+							}
+						});
+					} else {
+						userDB.findUserByProp(sexId, ageID, regionId, function(err, user) {
+							if (err) {
+								cb(err.message);
+							} else {
+								checkUser(user, email, sexId, ageID, regionId, cb);
+							}
+						})
+					}
+				},
+				function(id, cb) {
+					console.log(id);
+					var files = [{
+							userId: id,
+							scripId: req.body.idScript1,
+							fileInfo: req.files.file1[0].filename
+						},{
+							userId: id,
+							scripId: req.body.idScript2,
+							fileInfo: req.files.file2[0].filename
+						},{
+							userId: id,
+							scripId: req.body.idScript3,
+							fileInfo: req.files.file3[0].filename
+						}];
+					fileDB.saveFiles(files, function(err, docs) {
+						if (err) {
+							cb(err.message);
+						} else {
+							res.send({
+								status: 200,
+								message: files
+							})
+						}
+					})
 				}], function(err) {
-					console.log(err)
+					res.send({
+						status: 400,
+						message: err
+					});
 				}
 			);
-
-
-
-			var files = [
-				{
-					userId: req.body.idUser,
-					scripId: req.body.idScript1,
-					scriptInfo: req.files.file1[0].filename
-				},{
-					userId: req.body.idUser,
-					scripId: req.body.idScript2,
-					scriptInfo: req.files.file2[0].filename
-				},{
-					userId: req.body.idUser,
-					scripId: req.body.idScript3,
-					scriptInfo: req.files.file3[0].filename
-				}				
-			]
-
-			res.redirect('/');
 		}
 	}
 )
+
+checkUser = function(user, email,sex, age, region, callback) {
+	if (user) { // had prop
+		var id = user._id;
+		if (email) {
+			if (user.regionId != region || user.ageId != age || user.sexId != sex) {
+				user.regionId = region;
+				user.ageId = age;
+				user.sexId = sex;
+				userDB.updateOne({email: email}, {$set: {regionId: region, ageId: age, sexId: sex}}, {}, function(err, user) {
+					callback(null, id);
+				});
+			} else {
+				callback(null, id);
+			}
+		} else {
+			callback(null, id);
+		}
+	} else { // did not have prop
+		var user = userDB({
+			email	: email,
+			regionId: region,
+			ageId	: age,
+			sexId	: sex
+		});
+		userDB.saveUser(user, function(err, doc) {
+			if (err) {
+				callback(error.QUERY_DB_ERROR);
+			} else {
+				callback(null, doc._id)
+			}
+		})
+	}
+}
 
 router.get("/", function(req,res){
 	res.render('upload');

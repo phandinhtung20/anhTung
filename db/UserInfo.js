@@ -59,7 +59,21 @@ module.exports.findUserByEmail= function(email, callback) {
 			if (user == null) {
 				callback(null, null);
 			} else {
-				callback(errorUser.USER_EXIST, user._id);
+				callback(null, user._id);
+			}
+		}
+	})
+};
+
+module.exports.findUserByProp= function(sex, age, regionId, callback) {
+	user.findOne( { regionId: regionId,	ageId: age, sexId: sex}, function(err, user) {
+		if (err) {
+			callback(errorUser.QUERY_DB_ERROR, null);
+		} else {
+			if (user == null) {
+				callback(null, user);
+			} else {
+				callback(null, null);
 			}
 		}
 	})
