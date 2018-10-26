@@ -90,4 +90,8 @@ router.get("/", (req,res) => {
 		})
 })
 
+router.get("/page", (req,res) => {
+	res.render('uploadScript')
+})
+
 module.exports = router;

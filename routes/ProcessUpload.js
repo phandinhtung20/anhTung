@@ -38,7 +38,10 @@ router.post("/", upload.fields(
 			req.files.file2 == undefined ||
 			req.files.file3 == undefined
 			) {
-			res.send("<h1>Upload file khong thanh cong</h1>")
+			res.send({
+						status: 400,
+						message: "Sai thong tin"
+					});
 		} else {
 			async.waterfall([
 				function(cb) { // Check regionId

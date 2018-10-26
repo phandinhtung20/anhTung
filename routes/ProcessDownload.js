@@ -21,7 +21,7 @@ router.get('/', function(req, res) {
 				})
 			},
 			function(files, cb) {
-				generateFileInfoCSV(files, function(err) {
+				generateFileInfoXLS(files, function(err) {
 					if (err) {
 						cb(err.message);
 					} else {
@@ -58,11 +58,14 @@ router.get('/', function(req, res) {
 		}
 	);
 });
-
+// Render page download
+router.get('/page', function(req,res) {
+	res.render('download')
+});
 var getAllFileInfo = (callback) => {
 	fileDB.getAllInfo(callback)
 };
-var generateFileInfoCSV = (files, callback) => {
+var generateFileInfoXLS = (files, callback) => {
 	var workbook = new exceljs.Workbook();
 	var sheet = workbook.addWorksheet('info');
 	sheet.columns = [

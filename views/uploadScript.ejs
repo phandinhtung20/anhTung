@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Đồ án chuyên ngành nhúng</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/lib/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="/lib/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/lib/jumbotron-narrow.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="/lib/ie-emulation-modes-warning.js"></script>
+
+  </head>
+
+  <body>
+
+    <div class="container">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation"><a href="/">Trang chủ</a></li>
+            <li role="presentation"><a href="/download/page">Download</a></li>
+            <li role="presentation" class="active"><a href="#">Add Script</a></li>
+          </ul>
+        </nav>
+        <h3 class="text-muted">Đồ án chuyên ngành nhúng</h3>
+      </div>
+
+      <div class="jumbotron">
+        <h1>Cảnh báo</h1>
+        <p class="lead">Đây là phần dành cho nhà phát triển, nếu truy cập vui lòng trở về trang chủ.</p>
+        <p><a class="btn btn-lg btn-success" href="/" role="button">Về trang chủ</a></p>
+      </div>
+
+      <div class="row marketing">
+        <div class="col-lg-6">
+          <h4>Hướng dẫn</h4>
+          <p>
+            <ul>
+              <li>Tên file: <span style="color: red">Nhà phát triển biết</span></li>
+              <li>Thông tin: Các đoạn script được lưu trong một cột A, trên các dòng liên tục</li>
+              <li>Script nên là các câu văn đơn giản, dễ đọc</li>
+            </ul>
+          </p>
+
+        </div>
+        
+        <div class="col-lg-6">
+          <h4>Lỗi</h4>
+          <p>Nếu thành công sẽ quay về trang chủ luôn. Ngược lại, sẽ có một số lỗi hay gặp phải:
+          	<ul>
+          		<li>"Upload file khong thanh cong": Xuất hiện khi không có file hoặc file sai tên</li>
+          		<li>Còn lại: Lỗi do cấu trúc file hoặc khi cơ sở dữ liệu bị xập</li>
+          	</ul>
+          </p>
+        </div>
+
+        <div class="col-lg-6">
+          <h4>Thêm đoạn văn</h4>
+          <form action="/script" method="post" enctype="multipart/form-data">
+            <label>Chọn file</label>
+            <input type="file" name="file" required="true">
+            <input type="submit" name="upload" value="Cập nhật">
+          </form>
+
+        </div>
+      </div>
+
+      <footer class="footer">
+        <p>&copy; 2018 DUT, UDN.</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="/lib/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
