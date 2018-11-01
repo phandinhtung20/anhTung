@@ -1,0 +1,72 @@
+.container-fluid1{
+    background-image: url("../image/abc.png");
+     background-repeat: no-repeat;
+}
+/*.container-fluid {
+	border-top: solid 17px #090909;
+}*/
+header{
+	border-bottom: solid 1px #090909;
+	padding: 17px 0;
+}
+#record-button {
+    display: inline-block;
+    border-radius: 50%;
+    border: .6rem solid #000;
+    background-color: #fff;
+    height: 2.5rem;
+    width: 2.5rem;
+    margin: 1rem 0;
+    cursor: pointer;
+}
+.text-box {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0 .3rem;
+    background-color: #fff;
+    border: 1px solid #000;
+    -webkit-box-shadow: 4px 4px 0 #000;
+    box-shadow: 4px 4px 0 #000;
+    -webkit-transition: -webkit-transform .4s cubic-bezier(0,1.43,.7,.94);
+    transition: -webkit-transform .4s cubic-bezier(0,1.43,.7,.94);
+    transition: transform .4s cubic-bezier(0,1.43,.7,.94);
+    transition: transform .4s cubic-bezier(0,1.43,.7,.94),-webkit-transform .4s cubic-bezier(0,1.43,.7,.94);
+    font-family: Arial,sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+p {
+    display: block;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+}
+
+ul {
+    list-style: none;
+}
+
+#recordingslist audio {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.boxWave {
+    border: solid 2px black;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+}

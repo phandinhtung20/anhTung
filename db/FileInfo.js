@@ -7,6 +7,14 @@ var fileSch= mongoose.Schema({
 	fileInfo: {
 		type: String,
 		default: ''
+	},
+	duration: {
+		type: Number,
+		default: ''
+	},
+	projectRate: {
+		type: Number,
+		default: ''
 	}
 });
 
@@ -35,8 +43,12 @@ module.exports.getAllInfo= function(callback){
 	    },
 	    {
 	        $project: {
+	            _id: 1,
 	            fileInfo: 1,
 	            scripId: 1,
+	            duration: 1,
+	            projectRate: 1,
+	            userId: 1,
 	            ageId: "$user.ageId",
 	            sexId: "$user.sexId",
 	            regionId: "$user.regionId"
@@ -55,8 +67,12 @@ module.exports.getAllInfo= function(callback){
 	    },
 	    {
 	        $project: {
+	            _id: 1,
 	            fileInfo: 1,
 	            scripId: 1,
+	            duration: 1,
+	            projectRate: 1,
+	            userId: 1,
 	            ageId : 1,
 	            sexId : 1,
 	            region : "$region.region"
@@ -77,6 +93,9 @@ module.exports.getAllInfo= function(callback){
 	        $project: {
 	            _id: 1,
 	            fileInfo: 1,
+	            duration: 1,
+	            projectRate: 1,
+	            userId: 1,
 	            ageId: 1,
 	            sexId: 1,
 	            region: 1,
