@@ -25,6 +25,7 @@ router.post("/", upload.fields(
 		}
 	]), function(req,res){
 		console.log(req.files);
+		console.log(req.body);
 		var sexId = req.body.sexId,
 			ageID = req.body.ageId,
 			regionId = req.body.regionId;
@@ -38,10 +39,11 @@ router.post("/", upload.fields(
 			req.files.file2 == undefined ||
 			req.files.file3 == undefined
 			) {
-			res.send({
-						status: 400,
-						message: "Sai thong tin"
-					});
+				console.log(req.body)
+				res.send({
+					status: 400,
+					message: "Sai thong tin"
+				});
 		} else {
 			async.waterfall([
 				function(cb) { // Check regionId

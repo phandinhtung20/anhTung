@@ -13,7 +13,16 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
         <script>
-            var script;
+            var script=  [{
+                "script": "Đến khoảng 20 giờ cùng ngày, đám cháy cơ bản được khống chế",
+                "_id": "5bb8e0d04df33705e4edf5e7"
+                },{
+                "script": "Một người nhà giàu mở tiệc lớn, anh ta mời nhiều bạn bè và những người quen biết",
+                "_id": "5bb8e0d04df33705e4edf5e8"
+                },{
+                "script": "Ôi sung sướng làm sao khi mình đã đến đây! Đâu phải lúc nào mình cũng được như thế này",
+                "_id": "5bb8e0d04df33705e4edf5e9"
+                }];
             var i = -1;
             var blobList = []
 
@@ -43,12 +52,14 @@
                 recorder && recorder.stop();
                 __log('Stopped recording.');
 
-                showNextScript();
-                showStartRecordButton();
-                if (i == 3) {
+                if (i == 2) {
                     showButtonUpload();
                     $('#myModal').modal('hide');
                     hideStartButton();
+                    showStartRecordButton();
+                } else {
+                    showNextScript();
+                    showStartRecordButton();
                 }
 
                 createDownloadLink();
@@ -57,6 +68,17 @@
 
             function createDownloadLink(blob) {
                 recorder && recorder.exportWAV(function(blob) {
+                    // var fd = new FormData();
+                    // fd.append('upl', blob, 'blobby.wav');
+
+                    // fetch('/demo',
+                    // {
+                    //     method: 'post',
+                    //     body: fd
+                    // }); 
+
+
+                    console.log("blobList.length: "+blobList.length);
                     blobList.push(blob);
 
                     var url = URL.createObjectURL(blob);
@@ -109,9 +131,7 @@
             }
             showNextScript = function() {
                 i++;
-                if (i<3) {
-                    $('#script').text(script[i].script);
-                }
+                $('#script').text(script[i].script);
             }
             generalButtonUpload = function() {
                 upload.addEventListener("click", function(blob, name="audio") {
@@ -128,74 +148,23 @@
                 $('#btnNewSesion').hide()
             }
             loadScript = function() {
-                $('#btnStart').hide();
-                $('#labelOnLoad').show();
-                $.get( "/script", function( data ) {
-                    console.log(data);
-                    // data = JSON.parse(data);
-                    if (data.status == 200) {
-                        script = data.message;
-                        showNextScript();
-                        $('#labelOnLoad').hide();
-                        $('#btnStart').show();
-                    } else {
-                        $('#textOnLoad').text(data.message);
-                    }
-                }).fail(function() {
-                    $('#textOnLoad').text("Lỗi khi tải văn bản");
-                    alert( "Error when load script" );
-                });
+                showNextScript();
+                $('#labelOnLoad').hide();
             }
-            onChange = function() {
-                var reg = $("#inpReg option:selected").val();
-                var age = $("#inpAge option:selected").val();
-                var sex = $("#inpSex option:selected").val();
-                if (reg == 'null' || age == 'null' || sex == 'null') {
-                    $('#labelAlert').show();
-                    $('#btnSubmit').hide();
-                } else {
-                    $('#labelAlert').hide();
-                    $('#btnSubmit').show();
-                }
-            }
-            onClickSubmit = function() {
-                var reg = $("#inpReg option:selected").val();
-                var age = $("#inpAge option:selected").val();
-                var sex = $("#inpSex option:selected").val();
-                var email = $("#txtEmail").val();
-                localStorage.setItem("region", reg);
-                localStorage.setItem("age", age);
-                localStorage.setItem("sex", sex);
-                localStorage.setItem("email", email);
-
+            onClickUpload = function() {
                 var fd = new FormData();
                 fd.append('file1', blobList[0], 'file1.wav');
                 fd.append('file2', blobList[1], 'file2.wav');
                 fd.append('file3', blobList[2], 'file3.wav');
 
-                fd.append('idScript1', script[0]._id);
-                fd.append('idScript2', script[1]._id);
-                fd.append('idScript3', script[2]._id);
-
-                fd.append('email', email);
-                fd.append('sexId', sex);
-                fd.append('ageId', age);
-                fd.append('regionId', reg);
-
-                fetch('/upload', {
+                fetch('/demo', {
                     method: 'post',
                     body: fd
                 }).then(res => res.json())
                 .then((response) => {
-                    if (response.status != 200) {
-                        alert("Cập nhật lỗi")
-                    } else {
-                        alert("Thành công")
-                        console.log('Success:', response.message)
-                        onClickNewSession();
-                    }
+                    console.log('Success:', JSON.stringify(response))
                 }).catch((error) => {
-                    alert("Lỗi xảy ra - lỗi không từ máy chủ")
+                    console.error('Error:', error)
                 });
             }
             onClickRetry = function() {
@@ -215,40 +184,17 @@
                 loadScript();
                 hideButtonUpload();
             }
-            loadLocalStorage = function() {
-                var reg = localStorage.getItem("region");
-                var age = localStorage.getItem("age");
-                var sex = localStorage.getItem("sex");
-                var email = localStorage.getItem("email");
-
-                if (reg) {
-                    $('#inpReg option[value='+reg+']').attr('selected','selected');
-                }
-                if (age) {
-                    $('#inpAge option[value='+age+']').attr('selected','selected');
-                }
-                if (sex) {
-                    $('#inpSex option[value='+sex+']').attr('selected','selected');
-                }
-                if (email) {
-                    $('#txtEmail').val(email);
-                }
-                onChange();
-            }
             $(()=>{
                 showStartButton();
                 showStartRecordButton();
                 hideButtonUpload();
                 loadScript();
-                loadLocalStorage();
 
-                $("#btnSubmit").click(onClickSubmit);
+                $("#btnUpload").click(onClickUpload);
                 $("#btnRetry").click(onClickRetry);
                 $("#btnHuyRecording1").click(onClickRetry);
                 $("#btnHuyRecording2").click(onClickRetry);
                 $("#btnNewSesion").click(onClickNewSession);
-
-                // $('#btnUpload').show();  
             })
         </script>
     </head>
@@ -288,9 +234,7 @@
                     <ul id="recordingslist"></ul>
                     <button type="button" class="btn btn-primary" id="btnNewSesion">Ghi mới</button>
                     <button type="button" class="btn btn-warning" id="btnRetry">Ghi âm lại</button>
-                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#popUpInfo" id="btnUpload">
-                        Kiểm tra xong - Gửi
-                    </button>
+                    <button type="button" class="btn btn-success" id="btnUpload">Kiểm tra xong - Gửi</button>
                 </dl>
             </div>
         </div>
@@ -318,72 +262,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="container modal" id="popUpInfo">
-            <!-- The Modal -->
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h4 class="modal-title">Thông tin người dùng</h4>
-                        <button type="button" class="close" data-dismiss="modal" id="btnHuyRecording1">&times;</button>
-                    </div>
-                    <!-- Modal body -->
-                    <div class="modal-body text-center">
-                        <h5>email</h5> </br>
-                        <input type="email" name="email" id="txtEmail"> </br>
-                        <small>vùng miền *</small>
-                        <select class="form-control" id="inpReg" onchange="onChange()">
-                            <option value='null'>--</option>
-                            <option value="5bc466e3dc0111146fb5f067" >Bắc (r, s, tr đọc nhẹ)</option>
-                            <option value="5bc46ec7dc0111146fb6143d" >Bắc (r, s, tr đọc nặng) </option>
-                            <option value="5bc46f81dc0111146fb617b3" >Bắc (lẫn l và n)</option>
-                            <option value="5bc46f81dc0111146fb617b6" >Thanh Hóa</option>
-                            <option value="5bc46f82dc0111146fb617b8" >Nghệ An</option>
-                            <option value="5bc46f82dc0111146fb617bb" >Hà Tĩnh</option>
-                            <option value="5bc46f82dc0111146fb617bd" >Quảng Bình </option>
-                            <option value="5bc46f83dc0111146fb617bf">Quảng Trị</option>
-                            <option value="5bc46f83dc0111146fb617c2">Huế</option>
-                            <option value="5bc46f83dc0111146fb617c4">Quảng Nam, Đầ Nẵng, Quảng Ngãi</option>
-                            <option value="5bc46f84dc0111146fb617c6">Tây Nguyên</option>
-                            <option value="5bc46f84dc0111146fb617cb">Bình Định</option>
-                            <option value="5bc46f84dc0111146fb617cf">Phú Yên đến Bình Thuận</option>
-                            <option value="5bc46f84dc0111146fb617d2">Đông Nam Bộ</option>
-                            <option value="5bc46f85dc0111146fb617d5">Tây Nam Bộ</option>
-                        </select>
-                        <small>Tuổi *</small>
-                        <select class="form-control" id="inpAge" onchange="onChange()">
-                            <option value='null'>--</option>
-                            <option value="0"> 0-19 </option>
-                            <option value="1">20-29</option>
-                            <option value="2">30-39</option>
-                            <option value="3">40-49</option>
-                            <option value="4">50-59 </option>
-                            <option value="5">60-69</option>
-                            <option value="6">70-79</option>
-                            <option value="7">80-89</option>
-                            <option value="8">>89</option>
-                        </select>
-                        <small>Giới Tính *</small>
-                        <select class="form-control" id="inpSex" onchange="onChange()">
-                            <option value='null'>--</option>
-                            <option value="0">Nam</option>
-                            <option value="1">Nữ</option>
-                            <option value="3">khác</option>
-                        </select>
-                    </div>
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <div class="alert alert-warning" id="labelAlert">
-                            <strong>Nhập đủ thông tin trước khi gửi!</strong>
-                        </div>
-                        <button type="button" class="btn btn-success" data-dismiss="modal" id="btnSubmit">
-                            Gửi
-                        </button>
-                    </div>
-                </div>
-            </div>
+        
         </div>
     </body> 
 </html>
