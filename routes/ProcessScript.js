@@ -74,7 +74,7 @@ router.get("/", (req,res) => {
 			});
 		},
 		function(count, cb) {
-			var skip = Math.floor(Math.random() * count - 3);
+			var skip = Math.floor(Math.random() * (count - 3));
 			scriptDB.getRandom(skip, 3, function(err, docs) {
 				if (err) {
 					cb(err);

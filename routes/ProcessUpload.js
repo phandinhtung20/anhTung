@@ -9,6 +9,7 @@ var express		= require('express'),
 	async 		= require('async'),
 	diskStorage = require('../configAndConstant/Config'),
 	constant 	= require('../configAndConstant/Constant'),
+	childProcess= require("child_process"),
 	upload 		= multer({dest: 'uploads/', storage: diskStorage.storage});
 
 router.post("/", upload.fields(
@@ -92,20 +93,44 @@ router.post("/", upload.fields(
 						})
 					}
 				},
-				function(id, cb) {
-					console.log(id);
+				function(id, cb) { // Get infor file
+					var spawn = childProcess.spawn;
+					var process = spawn('python',
+						["./python/snr.py",
+						req.files.file1[0].path,
+						req.files.file2[0].path,
+						req.files.file3[0].path] );
+					process.stdout.on('data', function(data) {
+						var wavInfo = JSON.parse(data.toString());
+						if (wavInfo.status) {
+							cb(null, id, wavInfo.message)
+						} else {
+							cb('Python snr error')
+						}
+				    })
+				},
+				function(id, wavInfo, cb) {
 					var files = [{
-							userId: id,
-							scripId: req.body.idScript1,
-							fileInfo: req.files.file1[0].filename
+							userId		: id,
+							scripId 	: req.body.idScript1,
+							fileInfo 	: req.files.file1[0].filename,
+							duration	: wavInfo.file1.dr,
+							projectRate	: wavInfo.file1.rate,
+							snr 		: wavInfo.file1.srn
 						},{
-							userId: id,
-							scripId: req.body.idScript2,
-							fileInfo: req.files.file2[0].filename
+							userId 		: id,
+							scripId 	: req.body.idScript2,
+							fileInfo 	: req.files.file2[0].filename,
+							duration 	: wavInfo.file2.dr,
+							projectRate	: wavInfo.file2.rate,
+							snr 		: wavInfo.file2.srn
 						},{
-							userId: id,
-							scripId: req.body.idScript3,
-							fileInfo: req.files.file3[0].filename
+							userId		: id,
+							scripId 	: req.body.idScript3,
+							fileInfo 	: req.files.file3[0].filename,
+							duration 	: wavInfo.file3.dr,
+							projectRate : wavInfo.file3.rate,
+							snr 		: wavInfo.file3.srn
 						}];
 					fileDB.saveFiles(files, function(err, docs) {
 						if (err) {

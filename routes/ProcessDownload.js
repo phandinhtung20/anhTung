@@ -70,6 +70,10 @@ var generateFileInfoXLS = (files, callback) => {
 	var sheet = workbook.addWorksheet('info');
 	sheet.columns = [
 	    { header: 'fileName', key: 'name', width: 30 },
+	    { header: 'duration', key: 'duration', width: 10 },
+	    { header: 'sample frequency', key: 'projectRate', width: 10 },
+	    { header: 'snr', key: 'snr', width: 10 },
+	    { header: 'userId', key: 'userId', width: 30 },
 	    { header: 'script', key: 'script', width: 50 },
 	    { header: 'sex', key: 'sex', width: 10 },
 	    { header: 'age', key: 'age', width: 10 },
@@ -78,11 +82,15 @@ var generateFileInfoXLS = (files, callback) => {
 
 	for (var i = 0; i < files.length; i++) {
 		sheet.addRow({
-			name: files[i].fileInfo,
-			script: files[i].script, 
-			sex: constant.sex[files[i].sexId],
-			age: constant.age[files[i].ageId],
-			region: files[i].region
+			name 		: files[i].fileInfo,
+			duration	: files[i].duration,
+			projectRate	: files[i].projectRate,
+			snr			: files[i].snr,
+			userId		: files[i].userId,
+			script		: files[i].script, 
+			sex 		: constant.sex[files[i].sexId],
+			age 		: constant.age[files[i].ageId],
+			region		: files[i].region
 		});
 	}
 
