@@ -82,31 +82,6 @@
             </div>
         </div>
 
-        <div class="container modal" id="myModal1">
-            <!-- The Modal -->
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h4 class="modal-title">Bắt đầu ghi âm</h4>
-                        <button type="button" class="close" data-dismiss="modal" id="btnHuyRecording11">&times;</button>
-                    </div>
-                    <!-- Modal body -->
-                    <div class="modal-body text-center">
-                        <p id="script1">Modal body..</p> <br>
-                        <button onclick="startRecordingagain(this)" id="startRecordagain" >record</button>
-                        <button onclick="stopRecordingagain(this)" id="stopRecordagain" >stop</button>
-                    </div>
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal" id="btnHuyRecording21">
-                            Hủy
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="container modal" id="popUpInfo">
             <!-- The Modal -->
             <div class="modal-dialog">
@@ -142,15 +117,17 @@
                         <small>Tuổi *</small>
                         <select class="form-control" id="inpAge" onchange="onChange()">
                             <option value='null'>--</option>
-                            <option value="0"> 0-19 </option>
-                            <option value="1">20-29</option>
-                            <option value="2">30-39</option>
-                            <option value="3">40-49</option>
-                            <option value="4">50-59 </option>
-                            <option value="5">60-69</option>
-                            <option value="6">70-79</option>
-                            <option value="7">80-89</option>
-                            <option value="8">>89</option>
+                            <option value="0"> 1-9 </option>
+                            <option value="1">10-14</option>
+                            <option value="2">15-19</option>
+                            <option value="3">19-29</option>
+                            <option value="4">30-39</option>
+                            <option value="5">40-49</option>
+                            <option value="6">50-59</option>
+                            <option value="7">60-69</option>
+                            <option value="8">70-79</option>
+                            <option value="9">80-89</option>
+                            <option value="10">>89</option>
                         </select>
                         <small>Giới Tính *</small>
                         <select class="form-control" id="inpSex" onchange="onChange()">
