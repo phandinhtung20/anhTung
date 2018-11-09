@@ -4,6 +4,8 @@ var blobList = []
 
 var audio_context;
 var recorder;
+var isAgain = false;
+var itemAgain = 0;
 
 function startUserMedia(stream) {
     var input = audio_context.createMediaStreamSource(stream);
@@ -12,40 +14,75 @@ function startUserMedia(stream) {
 }
 
 function startRecording(button) {
+    isAgain = false;
     recorder && recorder.record();
     hideStartRecordButton();
+}
+
+function startRecordAgain(button) {
+    isAgain = true;
+    recorder && recorder.record();
+    $('#startRecordAgain').hide()
+    $('#stopRecordAgain').show()
 }
 
 function stopRecording(button) {
     recorder && recorder.stop();
 
-    showNextScript();
-    showStartRecordButton();
-    if (i == 3) {
-        showButtonUpload();
-        $('#myModal').modal('hide');
-        hideStartButton();
+    if (isAgain) {
+        $('#modalRecordAgain').modal('hide');
+    } else {
+        showNextScript();
+        showStartRecordButton();
+        if (i == 3) {
+            showButtonUpload();
+            $('#myModal').modal('hide');
+            hideStartButton();
+        }
     }
-
     createDownloadLink();
     recorder.clear();
 }
 
 function createDownloadLink(blob) {
     recorder && recorder.exportWAV(function(blob) {
-        blobList.push(blob);
+        if (isAgain) {
+            console.log("record again item "+itemAgain);
+            var au = document.getElementById('idAu'+itemAgain);
+            var url = URL.createObjectURL(blob);
+            au.src = url;
+            blobList[itemAgain] = blob;
+        } else {
+            blobList.push(blob);
 
-        var url = URL.createObjectURL(blob);
-        var li = document.createElement('li');
-        var au = document.createElement('audio');
-        var dr= document.createElement('p');
-        var input= document.createElement('input');
-        dr.innerHTML= script[i-1].script;
-        au.controls = true;
-        au.src = url;
-        li.appendChild(dr);
-        li.appendChild(au); 
-        recordingslist.appendChild(li);
+            var url = URL.createObjectURL(blob);
+            var au = document.createElement('audio');
+            au.controls = true;
+            au.src = url;
+            au.id = 'idAu'+(i-1);
+
+            var dr= document.createElement('p');
+            dr.innerHTML= script[i-1].script;
+
+            var btnRcAgain= document.createElement("button");
+            btnRcAgain.innerHTML = "Ghi âm lại";
+            btnRcAgain.value = i-1;  
+            btnRcAgain.className = 'btn btn-primary';
+            btnRcAgain.addEventListener("click", function(){
+                itemAgain = btnRcAgain.value;
+                $('#modalRecordAgain').modal("show");
+                $('#scriptAgain').text(script[itemAgain].script);
+                $('#startRecordAgain').show()
+                $('#stopRecordAgain').hide()
+            });
+
+            // var input= document.createElement('input');
+            var li = document.createElement('li');
+            li.appendChild(dr);
+            li.appendChild(au); 
+            li.appendChild(btnRcAgain);
+            recordingslist.appendChild(li);
+        }
     });
 }
 
@@ -221,5 +258,7 @@ $(()=>{
     $("#btnHuyRecording2").click(onClickRetry);
     $("#btnNewSesion").click(onClickNewSession);
 
-    // $('#btnUpload').show();  
+    $('#btnCancelRcAgain').click(function() {
+        console.log("Only hide");
+    });  
 })

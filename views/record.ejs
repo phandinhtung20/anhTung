@@ -27,7 +27,7 @@
                     <li><a href="hoso.html">Hồ sơ</a></li>
                 </ul>
             </div>
-            <div class="col-md-4" >
+            <div class="col-md-6" >
                 <label style=" font-size: 30px; margin-top: 100px; font-weight: 700;">
                     Các Bước Thu Âm
                 </label>            
@@ -149,5 +149,30 @@
                 </div>
             </div>
         </div>
+
+        <div class="container modal" id="modalRecordAgain">
+            <!-- The Modal -->
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Ghi âm lại</h4>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body text-center">
+                        <p id="scriptAgain">Modal body..</p> <br>
+                        <button onclick="startRecordAgain(this)" id="startRecordAgain" >record</button>
+                        <button onclick="stopRecording(this)" id="stopRecordAgain" >stop</button>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" id="btnCancelRcAgain">
+                            Hủy
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </body> 
 </html>
