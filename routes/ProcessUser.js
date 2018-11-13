@@ -77,21 +77,6 @@ router.post("/", function(req,res){
 })
 
 router.get("/options", function(req,res) {
-	// gui len email
-	// response
-
-	// {
-	// 	status: 200
-	// message: {
-	// 	sexId,
-	// 	ageId,
-	// 	userId,
-	// 	regionId	
-	// }
-	//
-	// }
-	// status 201 => ko cos
-	// status 200 => co, message chua id cua email
 })
 
 router.get("/", function(req,res) {

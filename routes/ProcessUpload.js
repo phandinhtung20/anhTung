@@ -187,8 +187,8 @@ checkUser = function(user, email,sex, age, region, callback) {
 	}
 }
 
-router.get("/", function(req,res){
-	res.render('upload');
-})
+// router.get("/", function(req,res){
+// 	res.render('upload');
+// })
 
 module.exports = router;
