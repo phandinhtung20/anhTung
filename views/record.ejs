@@ -20,22 +20,18 @@
                 <b>
                     <h2>Thu Âm</h2>
                 </b>
-                <ul>
+                <!-- <ul>
                     <li><a href="trangchu.html">Trang chủ</a></li>
                     <li><a style="background: #EC870E; color: #fbfcfd;" href="ghiam.html">Ghi âm</a></li>
                     <li><a href="kiemtra.html">Kiem tra</a></li>
                     <li><a href="hoso.html">Hồ sơ</a></li>
-                </ul>
+                </ul> -->
             </div>
             <div class="col-md-6" >
                 <label style=" font-size: 30px; margin-top: 100px; font-weight: 700;">
                     Các Bước Thu Âm
                 </label>            
                 <dl class="dl-horizontal">
-                    <p id="id_test1"></p>
-                    <p id ="id_test2"></p>
-                    <p id="id_test3"></p>
-
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="btnStart">
                         Bắt đầu thu âm
                     </button>
@@ -97,37 +93,34 @@
                         <input type="email" name="email" id="txtEmail"> </br>
                         <small>vùng miền *</small>
                         <select class="form-control" id="inpReg" onchange="onChange()">
-                            <option value='null'>--</option>
-                            <option value="5bc466e3dc0111146fb5f067" >Bắc (r, s, tr đọc nhẹ)</option>
-                            <option value="5bc46ec7dc0111146fb6143d" >Bắc (r, s, tr đọc nặng) </option>
-                            <option value="5bc46f81dc0111146fb617b3" >Bắc (lẫn l và n)</option>
-                            <option value="5bc46f81dc0111146fb617b6" >Thanh Hóa</option>
-                            <option value="5bc46f82dc0111146fb617b8" >Nghệ An</option>
-                            <option value="5bc46f82dc0111146fb617bb" >Hà Tĩnh</option>
-                            <option value="5bc46f82dc0111146fb617bd" >Quảng Bình </option>
-                            <option value="5bc46f83dc0111146fb617bf">Quảng Trị</option>
-                            <option value="5bc46f83dc0111146fb617c2">Huế</option>
-                            <option value="5bc46f83dc0111146fb617c4">Quảng Nam, Đầ Nẵng, Quảng Ngãi</option>
-                            <option value="5bc46f84dc0111146fb617c6">Tây Nguyên</option>
-                            <option value="5bc46f84dc0111146fb617cb">Bình Định</option>
-                            <option value="5bc46f84dc0111146fb617cf">Phú Yên đến Bình Thuận</option>
-                            <option value="5bc46f84dc0111146fb617d2">Đông Nam Bộ</option>
-                            <option value="5bc46f85dc0111146fb617d5">Tây Nam Bộ</option>
+                            <%if (locals.foo) { %>
+                                <%for (var i = 0; i < regions.length; i++) { %>
+                                    <option value="<%=regions[i]._id%>"><%=regions[i].region%></option>
+                                <%}%>
+                            <%}else {%>
+                                <option value='null'>--</option>
+                                <option value="5bc466e3dc0111146fb5f067" >Bắc (r, s, tr đọc nhẹ)</option>
+                                <option value="5bc46ec7dc0111146fb6143d" >Bắc (r, s, tr đọc nặng) </option>
+                                <option value="5bc46f81dc0111146fb617b3" >Bắc (lẫn l và n)</option>
+                                <option value="5bc46f81dc0111146fb617b6" >Thanh Hóa</option>
+                                <option value="5bc46f82dc0111146fb617b8" >Nghệ An</option>
+                                <option value="5bc46f82dc0111146fb617bb" >Hà Tĩnh</option>
+                                <option value="5bc46f82dc0111146fb617bd" >Quảng Bình </option>
+                                <option value="5bc46f83dc0111146fb617bf">Quảng Trị</option>
+                                <option value="5bc46f83dc0111146fb617c2">Huế</option>
+                                <option value="5bc46f83dc0111146fb617c4">Quảng Nam, Đầ Nẵng, Quảng Ngãi</option>
+                                <option value="5bc46f84dc0111146fb617c6">Tây Nguyên</option>
+                                <option value="5bc46f84dc0111146fb617cb">Bình Định</option>
+                                <option value="5bc46f84dc0111146fb617cf">Phú Yên đến Bình Thuận</option>
+                                <option value="5bc46f84dc0111146fb617d2">Đông Nam Bộ</option>
+                                <option value="5bc46f85dc0111146fb617d5">Tây Nam Bộ</option>
+                            <%}%>
                         </select>
                         <small>Tuổi *</small>
                         <select class="form-control" id="inpAge" onchange="onChange()">
-                            <option value='null'>--</option>
-                            <option value="0"> 1-9 </option>
-                            <option value="1">10-14</option>
-                            <option value="2">15-19</option>
-                            <option value="3">19-29</option>
-                            <option value="4">30-39</option>
-                            <option value="5">40-49</option>
-                            <option value="6">50-59</option>
-                            <option value="7">60-69</option>
-                            <option value="8">70-79</option>
-                            <option value="9">80-89</option>
-                            <option value="10">>89</option>
+                            <%for (var age in ages) { %>
+                                <option value="<%=age%>"><%=ages[age]%></option>
+                            <%}%>
                         </select>
                         <small>Giới Tính *</small>
                         <select class="form-control" id="inpSex" onchange="onChange()">

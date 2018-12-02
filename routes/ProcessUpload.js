@@ -96,7 +96,7 @@ router.post("/", upload.fields(
 				function(id, cb) { // Get infor file
 					var spawn = childProcess.spawn;
 					var process = spawn('python',
-						["./python/snr.py",
+						["./python/SNRv2.py",
 						req.files.file1[0].path,
 						req.files.file2[0].path,
 						req.files.file3[0].path] );
@@ -107,7 +107,7 @@ router.post("/", upload.fields(
 						} else {
 							cb('Python snr error')
 						}
-				    })
+				    });
 				},
 				function(id, wavInfo, cb) {
 					var files = [{
@@ -116,21 +116,21 @@ router.post("/", upload.fields(
 							fileInfo 	: req.files.file1[0].filename,
 							duration	: wavInfo.file1.dr,
 							projectRate	: wavInfo.file1.rate,
-							snr 		: wavInfo.file1.srn
+							snr 		: wavInfo.file1.snr
 						},{
 							userId 		: id,
 							scripId 	: req.body.idScript2,
 							fileInfo 	: req.files.file2[0].filename,
 							duration 	: wavInfo.file2.dr,
 							projectRate	: wavInfo.file2.rate,
-							snr 		: wavInfo.file2.srn
+							snr 		: wavInfo.file2.snr
 						},{
 							userId		: id,
 							scripId 	: req.body.idScript3,
 							fileInfo 	: req.files.file3[0].filename,
 							duration 	: wavInfo.file3.dr,
 							projectRate : wavInfo.file3.rate,
-							snr 		: wavInfo.file3.srn
+							snr 		: wavInfo.file3.snr
 						}];
 					fileDB.saveFiles(files, function(err, docs) {
 						if (err) {

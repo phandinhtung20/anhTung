@@ -48,3 +48,11 @@ else:
 	print("{\"status\": false, \"message\": null}")
 
 sys.stdout.flush()
+
+audio\file1424-1542116667062.wav
+
+audio\file2608-1542116667082.wav
+
+audio\file3615-1542116667100.wav
+
+python .\onlyCode\SNR.py .\audio\file3615-1542116667100.wav .\audio\file2608-1542116667082.wav .\audio\file1424-1542116667062.wav
