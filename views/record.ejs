@@ -13,8 +13,18 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
         <script type="text/javascript" src="/lib/js/recorderProcess.js"></script>
+        <style type="text/css">
+
+        </style>
     </head>
     <body class="container-fluid1">
+
+        <!-- phan moi -->
+        <div class="loading" id="loading">
+            <h1>dang gui file</h1>
+            <img src="/lib/image/grid.svg">
+        </div>
+        <!-- end phan moi -->
         <div class="container row">
             <div style="margin-top: 100px;" class="col-md-3 col-md-offset-2">
                 <b>
@@ -69,8 +79,18 @@
                     <!-- Modal body -->
                     <div class="modal-body text-center">
                         <p id="script">Modal body..</p> <br>
-                        <button onclick="startRecording(this)" id="startRecord">record</button>
-                        <button onclick="stopRecording(this)" id="stopRecord">stop</button>
+                        
+                        <div  class="intro-banner-vdo-play-btn pinkBg" target="_blank" tabindex="nhap">
+                            <i class="glyphicon glyphicon-play whiteText" aria-hidden="true"></i>
+                            <span class="ripple pinkBg"></span> 
+                            <span class="ripple pinkBg"></span> 
+                            <!-- <button class="button">nhap gi do vào day</button> -->
+                            <span class="ripple pinkBg"></span>
+                            <span class="ripple pinkBg"></span>
+                            <span class="ripple pinkBg"></span>
+                            <button onclick="startRecording(this)" id="startRecord">record</button>
+                            <button onclick="stopRecording(this)" id="stopRecord">stop</button>
+                        </div>
                     </div>
                     <!-- Modal footer -->
                     <div class="modal-footer">

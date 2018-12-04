@@ -8,8 +8,7 @@ var isAgain = false;
 var itemAgain = 0;
 
 function startUserMedia(stream) {
-    var input = audio_context.createMediaStreamSource(stream);
-    
+    var input = audio_context.createMediaStreamSource(stream); 
     recorder = new Recorder(input);
 }
 
@@ -17,6 +16,7 @@ function startRecording(button) {
     isAgain = false;
     recorder && recorder.record();
     hideStartRecordButton();
+   $('span').show();
 }
 
 function startRecordAgain(button) {
@@ -28,7 +28,7 @@ function startRecordAgain(button) {
 
 function stopRecording(button) {
     recorder && recorder.stop();
-
+    $('span').hide();
     if (isAgain) {
         $('#modalRecordAgain').modal('hide');
     } else {
@@ -91,14 +91,17 @@ window.onload = function init() {
         window.AudioContext = window.AudioContext || window.webkitAudioContext;
         navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
         window.URL = window.URL || window.webkitURL;
-
         audio_context = new AudioContext;
     } catch (e) {
         alert('No web audio support in this browser!');
     }
 
     navigator.getUserMedia({audio: true}, startUserMedia, function(e) {
+
     });
+        $('#loading').hide();
+        $('span').hide();
+        $('#loading').show();
 };
 
 showStartButton = function() {
@@ -169,6 +172,9 @@ onChange = function() {
     }
 }
 onClickSubmit = function() {
+     //new
+    $('body').addClass("abc");
+    $('#loading').show();
     var reg = $("#inpReg option:selected").val();
     var age = $("#inpAge option:selected").val();
     var sex = $("#inpSex option:selected").val();
@@ -191,22 +197,30 @@ onClickSubmit = function() {
     fd.append('sexId', sex);
     fd.append('ageId', age);
     fd.append('regionId', reg);
-
     fetch('/upload', {
         method: 'post',
         body: fd
     }).then(res => res.json())
     .then((response) => {
+         // tat backgroub
+        $('body').removeClass("abc");
+        // $('#loading').hide();
+        //stop page uploading....s
         if (response.status != 200) {
             alert("Cập nhật lỗi")
         } else {
             alert("Thành công")
+
             console.log('Success:', response.message)
             onClickNewSession();
+
         }
+       
     }).catch((error) => {
+        $('#loading').hide();
         alert("Lỗi xảy ra - lỗi không từ máy chủ")
     });
+
 }
 onClickRetry = function() {
     console.log("clear");
