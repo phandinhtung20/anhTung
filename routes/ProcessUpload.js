@@ -94,6 +94,7 @@ router.post("/", upload.fields(
 					}
 				},
 				function(id, cb) { // Get infor file
+					console.log('Get infor file')
 					var spawn = childProcess.spawn;
 					var process = spawn('python',
 						["./python/SNRv2.py",
@@ -101,6 +102,7 @@ router.post("/", upload.fields(
 						req.files.file2[0].path,
 						req.files.file3[0].path] );
 					process.stdout.on('data', function(data) {
+						console.log(data.toString())
 						var wavInfo = JSON.parse(data.toString());
 						if (wavInfo.status) {
 							cb(null, id, wavInfo.message)
@@ -110,6 +112,7 @@ router.post("/", upload.fields(
 				    });
 				},
 				function(id, wavInfo, cb) {
+					console.log(wavInfo)
 					var files = [{
 							userId		: id,
 							scripId 	: req.body.idScript1,

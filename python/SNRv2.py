@@ -1,6 +1,4 @@
 import sys
-# import wave
-# import contextlib
 import numpy as np
 import os.path as path
 import soundfile as sf
@@ -202,51 +200,57 @@ def snr(s,r):
 		snr = 0;
 	return snr
 
-T = np.zeros((4,1));
+try:
+    T = np.zeros((4,1));
 
-if path.exists('.\\python\\result.out'):
-	file = open('.\\python\\result.out', 'r')
-	T = np.zeros((4,1));
-	for i in range(4):
-		line = file.readline();
-		while (line[len(line)-1] == '\n') or (line[len(line)-1] == '\r'):
-			line = line[0:len(line)-1]
-		T[i] = float(line)
-else:
-	inbkpts = np.array([0, 47622, 53747, 59649, 65784, 74414, 75422, 76133, 84779, 85925, 90810, 99030, 110146]);
-	instate = np.array([3, 2, 1, 2, 1, 3, 2, 1, 3, 2, 1, 3]);
-	if path.exists('.\\python\\training.wav'):
-		print("{\"status\": false, \"message\": \"training empty\"}")
-	x, SR = sf.read('..\\python\\training.wav') 
-	x = np.reshape(x , (x.shape[0],1))
-	outbkpts, outstate, T = VUS(x,SR,inbkpts,instate);
-	np.savetxt('.\\python\\result.out', T)
+    if path.exists('.\\python\\result.out'):
+    	file = open('.\\python\\result.out', 'r')
+    	T = np.zeros((4,1));
+    	for i in range(4):
+    		line = file.readline();
+    		while (line[len(line)-1] == '\n') or (line[len(line)-1] == '\r'):
+    			line = line[0:len(line)-1]
+    		T[i] = float(line)
+    else:
+    	inbkpts = np.array([0, 47622, 53747, 59649, 65784, 74414, 75422, 76133, 84779, 85925, 90810, 99030, 110146]);
+    	instate = np.array([3, 2, 1, 2, 1, 3, 2, 1, 3, 2, 1, 3]);
+    	x, SR = sf.read('.\\python\\training.wav') 
+    	x = np.reshape(x , (x.shape[0],1))
+    	outbkpts, outstate, T = VUS(x,SR,inbkpts,instate);
+    	np.savetxt('.\\python\\result.out', T)
 
-if (path.isfile(sys.argv[1])) and (path.isfile(sys.argv[2])) and (path.isfile(sys.argv[3])):
-    rs = "";
-    for i in range(1,4):
-        file = sys.argv[i];
-        # print(file)   
-        y, SR = sf.read(file);
-        try:
-            y = np.reshape(y[:,0] , (y.shape[0],1));
-        except IndexError:
-            y = np.reshape(y , (y.shape[0],1));
-        outbkpts, outstate, T = VUS(y,SR,T);
-        S = np.zeros(len(y));
-        for j in range(len(outbkpts) - 1):
-            n = np.arange(outbkpts[j],outbkpts[j+1]-1);
-            S[n] = outstate[j];
-        slient  = y[S==3];
-        ntimes = math.ceil(len(y) / len(slient));
-        r = np.tile(np.reshape(slient, len(slient)), ntimes);
-        r = r[:len(y)];
-        r = np.reshape(r, (len(r),1));
-        SNR = snr(y,r);   
-        rs = rs + ("\"file%s\":{\"snr\": %.2f,\"rate\": %s,\"dr\": %.2f}," %(i,float(SNR), SR, (len(y)/SR)));
-    print("{\"status\":true,\"message\":"+"{"+rs[0:len(rs)-1]+"}"+"}");
-else:
-    print("{\"status\": false, \"message\": null}")
+    if (path.isfile(sys.argv[1])) and (path.isfile(sys.argv[2])) and (path.isfile(sys.argv[3])):
+        rs = "";
+        for i in range(1,4):
+            file = sys.argv[i];
+            # print(file)   
+            y, SR = sf.read(file);
+            try:
+                y = np.reshape(y[:,0] , (y.shape[0],1));
+            except IndexError:
+                y = np.reshape(y , (y.shape[0],1));
+
+            SNR = 0;
+            try:
+                outbkpts, outstate, T = VUS(y,SR,T);
+                S = np.zeros(len(y));
+                for j in range(len(outbkpts) - 1):
+                    n = np.arange(outbkpts[j],outbkpts[j+1]-1);
+                    S[n] = outstate[j];
+                slient  = y[S==3];
+                if (len(slient) != 0):
+                    ntimes = math.ceil(len(y) / len(slient));
+                    r = np.tile(np.reshape(slient, len(slient)), ntimes);
+                    r = r[:len(y)];
+                    r = np.reshape(r, (len(r),1));
+                    SNR = snr(y,r);
+            except:
+                SNR = 0;
+            rs = rs + ("\"file%s\":{\"snr\": %.2f,\"rate\": %s,\"dr\": %.2f}," %(i,float(SNR), SR, (len(y)/SR)));
+        print("{\"status\":true,\"message\":"+"{"+rs[0:len(rs)-1]+"}"+"}");
+    else:
+        print("{\"status\": false, \"message\": null}")
+except:
+    print("{\"status\": false, \"message\": \"Unexpected error: %s\"}" %sys.exc_info()[0]); #traceback.format_exc())
 
 sys.stdout.flush()
-# python .\onlyCode\SNR.py .\audio\file3615-1542116667100.wav .\audio\file2608-1542116667082.wav .\audio\file1424-1542116667062.wav

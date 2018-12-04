@@ -141,7 +141,7 @@ loadScript = function() {
     $('#btnStart').hide();
     $('#labelOnLoad').show();
     $.get( "/script", function( data ) {
-        console.log(data);
+        // console.log(data);
         // data = JSON.parse(data);
         if (data.status == 200) {
             script = data.message;
@@ -200,9 +200,19 @@ onClickSubmit = function() {
         if (response.status != 200) {
             alert("Cập nhật lỗi")
         } else {
-            alert("Thành công")
-            console.log('Success:', response.message)
-            onClickNewSession();
+            let listLowQuality = [];
+            for (let i = 0; i < response.message.length; i++) {
+                if (response.message[i].snr < 20) {
+                    listLowQuality.push(i);
+                }
+            }
+            if (listLowQuality.length > 0) {
+                
+            } else {
+                alert("Thành công");
+                console.log('Success:', response.message)
+                onClickNewSession();
+            }
         }
     }).catch((error) => {
         alert("Lỗi xảy ra - lỗi không từ máy chủ")
