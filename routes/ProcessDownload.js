@@ -46,7 +46,9 @@ router.get('/', function(req, res) {
 
 				for (var i = 0; i < files.length; i++) {
 					var file = files[i].fileInfo;
-					zip.append(fs.createReadStream(process.cwd() + "\\uploads\\"+file), { name: file });
+					if (fs.existsSync(process.cwd() + "\\uploads\\"+file)) {
+						zip.append(fs.createReadStream(process.cwd() + "\\uploads\\"+file), { name: file });
+					}
 				}
 				zip.append(fs.createReadStream(process.cwd() + "\\uploads\\AudioInfo.xlsx"), {name: "AudioInfo.xlsx"});
 

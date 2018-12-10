@@ -1,11 +1,11 @@
 var script;
 var i = -1;
 var blobList = []
-
 var audio_context;
 var recorder;
 var isAgain = false;
 var itemAgain = 0;
+const classNameRecordAgain = 'btcRecordAgain';
 
 function startUserMedia(stream) {
     var input = audio_context.createMediaStreamSource(stream);
@@ -17,18 +17,21 @@ function startRecording(button) {
     isAgain = false;
     recorder && recorder.record();
     hideStartRecordButton();
+    $('span').show();
+    $('.toturialDiv').hide();
 }
 
 function startRecordAgain(button) {
     isAgain = true;
     recorder && recorder.record();
+    $('span').show();
     $('#startRecordAgain').hide()
     $('#stopRecordAgain').show()
 }
 
 function stopRecording(button) {
     recorder && recorder.stop();
-
+    $('span').hide();
     if (isAgain) {
         $('#modalRecordAgain').modal('hide');
     } else {
@@ -47,7 +50,6 @@ function stopRecording(button) {
 function createDownloadLink(blob) {
     recorder && recorder.exportWAV(function(blob) {
         if (isAgain) {
-            console.log("record again item "+itemAgain);
             var au = document.getElementById('idAu'+itemAgain);
             var url = URL.createObjectURL(blob);
             au.src = url;
@@ -66,8 +68,9 @@ function createDownloadLink(blob) {
 
             var btnRcAgain= document.createElement("button");
             btnRcAgain.innerHTML = "Ghi âm lại";
-            btnRcAgain.value = i-1;  
-            btnRcAgain.className = 'btn btn-primary';
+            btnRcAgain.value = i-1;
+            btnRcAgain.id = classNameRecordAgain+(i-1);
+            btnRcAgain.className = 'btn btn-primary ' + classNameRecordAgain;
             btnRcAgain.addEventListener("click", function(){
                 itemAgain = btnRcAgain.value;
                 $('#modalRecordAgain').modal("show");
@@ -76,11 +79,11 @@ function createDownloadLink(blob) {
                 $('#stopRecordAgain').hide()
             });
 
-            // var input= document.createElement('input');
             var li = document.createElement('li');
             li.appendChild(dr);
             li.appendChild(au); 
             li.appendChild(btnRcAgain);
+            var recordingslist= document.getElementById('recordingslist');
             recordingslist.appendChild(li);
         }
     });
@@ -99,6 +102,9 @@ window.onload = function init() {
 
     navigator.getUserMedia({audio: true}, startUserMedia, function(e) {
     });
+    $('#loading').hide();
+    $('span').hide();
+    $('#loading').show();
 };
 
 showStartButton = function() {
@@ -169,6 +175,8 @@ onChange = function() {
     }
 }
 onClickSubmit = function() {
+    $('body').addClass("abc");
+    $('#loading').show();
     var reg = $("#inpReg option:selected").val();
     var age = $("#inpAge option:selected").val();
     var sex = $("#inpSex option:selected").val();
@@ -197,6 +205,7 @@ onClickSubmit = function() {
         body: fd
     }).then(res => res.json())
     .then((response) => {
+        $('body').removeClass("abc");
         if (response.status != 200) {
             alert("Cập nhật lỗi")
         } else {
@@ -207,7 +216,24 @@ onClickSubmit = function() {
                 }
             }
             if (listLowQuality.length > 0) {
-                
+                const messageAlert = "Âm thanh không tốt ở đoạn "+listLowQuality+", bạn có muốn ghi âm lại không?"
+                var resConf = confirm(messageAlert);
+                console.log(resConf)
+                if (resConf) {
+                    for (let i = 0; i < listLowQuality.length; i++) {
+                        const btnRcAg = $('#'+classNameRecordAgain+i);
+                        console.log(i)
+                        console.log(btnRcAg)
+                        if (btnRcAg.hasClass('btn-primary')) {
+                            btnRcAg.removeClass('btn-primary');
+                        }
+                        if (!btnRcAg.hasClass('btn-danger')) {
+                            btnRcAg.addClass('btn-danger');
+                        }
+                    }
+                } else {
+                    onClickNewSession();
+                }
             } else {
                 alert("Thành công");
                 console.log('Success:', response.message)
@@ -215,11 +241,11 @@ onClickSubmit = function() {
             }
         }
     }).catch((error) => {
+        console.log(error)
         alert("Lỗi xảy ra - lỗi không từ máy chủ")
     });
 }
 onClickRetry = function() {
-    console.log("clear");
     $('#recordingslist').html('');
     i = -1;
     blobList = [];

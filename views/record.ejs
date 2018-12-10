@@ -30,7 +30,29 @@
             <div class="col-md-6" >
                 <label style=" font-size: 30px; margin-top: 100px; font-weight: 700;">
                     Các Bước Thu Âm
-                </label>            
+                </label>     
+
+                <div class="toturialDiv">
+                    <dl class="dl-horizontal">
+                        <dt>Bước 1:</dt>
+                        <dd>Dùng trình duyệt truy cập websize này</dd>
+                    </dl>
+                    <dl class="dl-horizontal">
+                        <dt>Bước 2:</dt><br>
+                        <dd><li> Chọn ghi âm để ghi âm 3 đoạn kịch bản</li> </dd>
+                        <dd><li> Nếu nghe lại cảm thấy không tốt có thể ghi âm lại</li> </dd>
+                        <dd><li> Nếu chất lượng kém có thể chọn ghi âm mới, hay ghi âm lại 3 đoạn lịch bản</li> </dd>
+                    </dl>
+                    <dl class="dl-horizontal">
+                        <dt>Bước 3:</dt>
+                        <dd>Chọn 'Kiểm tra xong - gửi' sau khi các đoạn âm tốt</dd>
+                    </dl>
+                    <dl class="dl-horizontal">
+                        <dt>Bước 4:</dt>
+                        <dd>Điền các thông tin cần thiết rồi chọn gửi</dd>
+                    </dl>
+                </div>
+
                 <dl class="dl-horizontal">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="btnStart">
                         Bắt đầu thu âm
@@ -65,8 +87,18 @@
                     <!-- Modal body -->
                     <div class="modal-body text-center">
                         <p id="script">Modal body..</p> <br>
-                        <button onclick="startRecording(this)" id="startRecord">record</button>
-                        <button onclick="stopRecording(this)" id="stopRecord">stop</button>
+                        <div  class="intro-banner-vdo-play-btn pinkBg" target="_blank" tabindex="nhap">
+                            <i class="glyphicon glyphicon-play whiteText" aria-hidden="true"></i>
+                            <span class="ripple pinkBg"></span> 
+                            <span class="ripple pinkBg"></span> 
+                            <span class="ripple pinkBg"></span>
+                            <span class="ripple pinkBg"></span>
+                            <span class="ripple pinkBg"></span>
+                            <button onclick="startRecording(this)" id="startRecord">record</button>
+                            <button onclick="stopRecording(this)" id="stopRecord">stop</button>
+                        </div>
+                        <!-- <button onclick="startRecording(this)" id="startRecord">record</button>
+                        <button onclick="stopRecording(this)" id="stopRecord">stop</button> -->
                     </div>
                     <!-- Modal footer -->
                     <div class="modal-footer">
@@ -154,8 +186,16 @@
                     <!-- Modal body -->
                     <div class="modal-body text-center">
                         <p id="scriptAgain">Modal body..</p> <br>
-                        <button onclick="startRecordAgain(this)" id="startRecordAgain" >record</button>
-                        <button onclick="stopRecording(this)" id="stopRecordAgain" >stop</button>
+                        <div  class="intro-banner-vdo-play-btn pinkBg" target="_blank" tabindex="nhap">
+                            <i class="glyphicon glyphicon-play whiteText" aria-hidden="true"></i>
+                            <span class="ripple pinkBg"></span> 
+                            <span class="ripple pinkBg"></span> 
+                            <span class="ripple pinkBg"></span>
+                            <span class="ripple pinkBg"></span>
+                            <span class="ripple pinkBg"></span>
+                            <button onclick="startRecordAgain(this)" id="startRecordAgain" >record</button>
+                            <button onclick="stopRecording(this)" id="stopRecordAgain" >stop</button>
+                        </div>
                     </div>
                     <!-- Modal footer -->
                     <div class="modal-footer">

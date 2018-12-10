@@ -12,7 +12,7 @@ router.post("/", upload.single('file', 3), function(req,res){
 		res.send("<h1>Upload file khong thanh cong</h1>")
 	} else {
 	    var workbook = new exceljs.Workbook();
-		
+		var response = true;
 		async.waterfall([
 				function(callback) {
 	    			var listScript = [];
@@ -54,11 +54,23 @@ router.post("/", upload.single('file', 3), function(req,res){
 					});
 				},
 				function(callback) {
-				    res.redirect('/');
+					if (response) {
+						res.redirect('/');
+						response = false;
+					}
 				}
 			], function (err, result) {
-				res.send(err)
+				if (response) {
+					res.send(err);
+					response = false;
+				}
 			});
+		setTimeout(() => {
+			if (response) {
+				res.send('<h1>File need to be formatted</h1>');
+				response = false;
+			}
+		}, 10000);
 	}
 })
 

@@ -139,6 +139,10 @@ router.post("/", upload.fields(
 						if (err) {
 							cb(err.message);
 						} else {
+							console.log({
+								status: 200,
+								message: files
+							})
 							res.send({
 								status: 200,
 								message: files
