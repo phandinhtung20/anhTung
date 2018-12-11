@@ -7,8 +7,9 @@ SVTH: Phan Đình Tùng<br />
 Tải và cài đặt Nodejs tại đây: https://nodejs.org/en/<br />
 Tải và cài đặt python tại đây: https://www.python.org/downloads/<br />
 Hoặc cài đặt anaconda (trọn bộ python) tại đây: https://www.anaconda.com/download/<br />
-Cài đặt 2 thư viện numpy và scipy cho python:<br />
+Cài đặt 2 thư viện numpy, soundfile và scipy cho python:<br />
 `pip install numpy`<br />
+`pip install soundfile`<br />
 `pip install scipy`
 
 ## Cài đặt chương trình
