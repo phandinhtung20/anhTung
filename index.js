@@ -13,7 +13,7 @@ app.set('views', './views')
 
 // Start server
 http.createServer(app).listen(80, function () {
-	console.log("Start server HTTP ");
+	console.log("Start server HTTP: http://localhost:80");
 });
 
 // Setup DB

@@ -4,7 +4,7 @@
   "description": "Do an chuyen nganh nhung",
   "main": "index.js",
   "scripts": {
-    "test": "node index"
+    "start": "node index"
   },
   "author": "tung phan",
   "license": "ISC",
