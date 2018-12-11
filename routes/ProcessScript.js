@@ -28,10 +28,7 @@ router.post("/", upload.single('file', 3), function(req,res){
 					});
 				},
 				function(listScript, cb) {
-					console.log("length: "+listScript.length)
 					async.each(listScript, function(script, callback) {
-						console.log('script: ' + script);
-
 						var newScript = new scriptDB({
 							script: script
 						});
